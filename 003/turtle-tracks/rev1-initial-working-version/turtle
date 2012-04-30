@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+load(File.dirname(__FILE__) + '/lib/turtle_tracks.rb')
+TurtleTracks.process(ARGV)
+

@@ -1,0 +1,23 @@
+task :default  => [:test]
+
+task :edit do
+  klasses = %w[ grid heading interpreter turtle cell grid_builder ]
+
+  sh "vim -O2" +
+    klasses.collect { |klass| " spec/unit/#{klass}_spec.rb lib/#{klass}.rb" }.join +
+    " spec/integration/app_spec.rb"
+end
+
+task :test do
+  sh "rspec --color -fd"
+end
+
+task :loc do
+  test = %x[ find spec -name '*.rb' | xargs cat | grep -v '^\s*$' | wc -l ].chomp.to_i
+  code = %x[ find lib  -name '*.rb' | xargs cat | grep -v '^\s*$' | wc -l ].chomp.to_i
+  ratio = test / (code * 1.0) 
+  printf "total: %s\n", test + code
+  printf "test:  %s\n", test 
+  printf "code:  %s\n", code 
+  printf "ratio: %0.1f\n", ratio
+end
